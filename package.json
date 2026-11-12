@@ -1,13 +1,17 @@
 {
-  "name": "movie-transcript",
+  "name": "video-transcript-generator",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postinstall": "node scripts/copy-ffmpeg.mjs",
+    "icons": "node scripts/make-icons.mjs"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "fflate": "^0.8.2",
     "next": "16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0"

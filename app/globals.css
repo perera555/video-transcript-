@@ -1,26 +1,222 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --mint-50: #f0fdf4;
+  --mint-100: #dcfce7;
+  --ink: #052e16;
+  --g1: #047857; /* emerald */
+  --g2: #16a34a; /* green */
+  --g3: #65a30d; /* lime */
+  --g4: #0d9488; /* teal */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-jakarta);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { color-scheme: light; overflow-x: clip; }
+body { overflow-x: clip; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background-color: var(--mint-50);
+  background-image:
+    radial-gradient(60rem 40rem at 10% -10%, rgba(134, 239, 172, 0.55), transparent 60%),
+    radial-gradient(50rem 35rem at 100% 0%, rgba(190, 242, 100, 0.40), transparent 60%),
+    radial-gradient(45rem 35rem at 50% 110%, rgba(94, 234, 212, 0.35), transparent 60%),
+    linear-gradient(180deg, #f7fef9 0%, #ecfdf3 100%);
+  background-attachment: fixed;
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+}
+
+/* Subtle dotted texture over the background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(4, 120, 87, 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(180deg, #000 0%, transparent 70%);
+  z-index: 0;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 20px 50px -20px rgba(4, 120, 87, 0.28),
+    0 2px 6px rgba(4, 120, 87, 0.06);
+}
+
+/* ---------- 3D system ---------- */
+/* Raised card: layered depth shadow + gentle perspective tilt on hover */
+.card-3d {
+  transform: perspective(1200px) rotateX(0) rotateY(0) translateZ(0);
+  transition: transform 0.45s cubic-bezier(.2,.7,.2,1), box-shadow 0.45s ease;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 -2px 0 rgba(4, 120, 87, 0.06) inset,
+    0 2px 0 #d1fae5,
+    0 4px 0 #bbf7d0,
+    0 6px 0 #a7f3d0,
+    0 28px 50px -18px rgba(4, 120, 87, 0.40);
+}
+.card-3d:hover {
+  transform: perspective(1200px) rotateX(2deg) rotateY(-1.5deg) translateY(-4px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 2px 0 #d1fae5,
+    0 5px 0 #bbf7d0,
+    0 8px 0 #a7f3d0,
+    0 40px 60px -20px rgba(4, 120, 87, 0.45);
+}
+.card-3d.no-tilt:hover { transform: translateY(-2px); }
+
+/* Tactile 3D buttons: solid depth edge that compresses when pressed */
+.btn-gradient.btn {
+  box-shadow: 0 4px 0 #065f46, 0 12px 22px -10px rgba(5, 150, 105, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+.btn-gradient.btn:not(:disabled):hover {
+  box-shadow: 0 6px 0 #065f46, 0 18px 30px -12px rgba(5, 150, 105, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+.btn-gradient.btn:not(:disabled):active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #065f46, 0 6px 12px -8px rgba(5, 150, 105, 0.7) !important;
+}
+.btn-ghost.btn { box-shadow: 0 3px 0 #bbf7d0, 0 10px 20px -14px rgba(4, 120, 87, 0.5); }
+.btn-ghost.btn:not(:disabled):active { transform: translateY(2px); box-shadow: 0 1px 0 #bbf7d0; }
+
+/* Floating 3D hero scene */
+.scene { perspective: 1400px; }
+.stage {
+  transform-style: preserve-3d;
+  transform: rotateX(14deg) rotateY(-18deg);
+  animation: sway 9s ease-in-out infinite;
+}
+@keyframes sway {
+  0%, 100% { transform: rotateX(14deg) rotateY(-18deg); }
+  50% { transform: rotateX(8deg) rotateY(-8deg) translateY(-8px); }
+}
+.layer { transform-style: preserve-3d; }
+.z-40px { transform: translateZ(40px); }
+.z-80px { transform: translateZ(80px); }
+.z-120px { transform: translateZ(120px); }
+.chip-3d {
+  box-shadow: 0 3px 0 #a7f3d0, 0 16px 30px -12px rgba(4, 120, 87, 0.5);
+}
+
+.glass-solid {
+  background: #ffffff;
+  border: 1px solid rgba(4, 120, 87, 0.12);
+  box-shadow: 0 30px 80px -20px rgba(4, 120, 87, 0.45);
+}
+
+.btn-gradient {
+  background-image: linear-gradient(120deg, var(--g1), var(--g2) 45%, var(--g3) 80%, var(--g4));
+  background-size: 200% 200%;
+  animation: shift 8s ease infinite;
+}
+
+/* Premium button feel: lift, glow and a glossy shine sweep on hover */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.18s ease, box-shadow 0.25s ease, background-color 0.2s ease, filter 0.2s ease;
+}
+.btn:not(:disabled):hover { transform: translateY(-2px); }
+.btn:not(:disabled):active { transform: translateY(0) scale(0.97); }
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+.btn:not(:disabled):hover::after { transform: translateX(120%); }
+.btn-gradient.btn { box-shadow: 0 10px 25px -10px rgba(5, 150, 105, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+.btn-gradient.btn:not(:disabled):hover { box-shadow: 0 16px 34px -12px rgba(5, 150, 105, 0.75), 0 0 0 4px rgba(134, 239, 172, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+/* Disabled buttons stay readable: solid soft green with dark text */
+.btn:disabled {
+  background-image: none !important;
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  border-color: #bbf7d0 !important;
+  box-shadow: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+.btn-ghost {
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(120deg, rgba(4, 120, 87, 0.35), rgba(132, 204, 22, 0.35)) border-box;
+  border: 1.5px solid transparent;
+}
+.btn-ghost:not(:disabled):hover { box-shadow: 0 10px 24px -14px rgba(4, 120, 87, 0.55); }
+
+.text-gradient {
+  background-image: linear-gradient(100deg, var(--g1), var(--g2) 40%, var(--g3) 75%, var(--g4));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shift 10s ease infinite;
+}
+
+@keyframes shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: float 14s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -20px) scale(1.08); }
+}
+
+.dropzone {
+  background:
+    linear-gradient(#ffffffcc, #ffffffcc) padding-box,
+    linear-gradient(120deg, var(--g1), var(--g3), var(--g4)) border-box;
+  border: 2px dashed transparent;
+}
+.dropzone.active { transform: scale(1.01); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.18); }
+
+.fade-up { animation: fadeUp 0.6s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* Big transcripts: let the browser skip off-screen rows */
+.seg-row { content-visibility: auto; contain-intrinsic-size: auto 64px; }
+
+/* Subtitle styling on the video */
+video::cue {
+  background: rgba(2, 44, 34, 0.72);
+  color: #fff;
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  font-size: 1.05em;
+  line-height: 1.35;
+}
+
+.scroll-thin { scrollbar-width: thin; scrollbar-color: rgba(4, 120, 87, 0.35) transparent; }
+
+input[type="range"] { accent-color: var(--g2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-gradient, .text-gradient, .blob, .fade-up, .stage { animation: none; }
+  .card-3d:hover { transform: none; }
 }
