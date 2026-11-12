@@ -42,3 +42,5 @@ next-env.d.ts
 
 # ffmpeg worker (copied on install)
 /public/ffmpeg/
+
+.vercel
